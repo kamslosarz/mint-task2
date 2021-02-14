@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Welcome!{% endblock %}
+
+{% block body %}
+    Welcome {{ app.user.username }} | <a href="{{ path('app_logout') }}">Logout</a>
+    <table>
+        <th>Username</th>
+        <th>Action</th>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>
+                    {% if user.enabled %}
+                        <a href="{{ path('admin_disable', {id: user.id}) }}">disable</a>
+                    {% else %}
+                        <span>disable</span>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% if pagesCount > 1 %}
+        <div class="pagination pagination-sm">
+            <span {{ currentPage == 1 ? 'class="disabled"' }}>
+                <a href="{{ path('admin_users', {page: currentPage-1 < 1 ? 1 : currentPage-1}) }}">«</a>
+            </span>
+            {% for i in 1..pagesCount %}
+                <span {{ currentPage == i ? 'class="active"' }}>
+                    <a href="{{ path('admin_users', {page: i}) }}">{{ i }}</a>
+                </span>
+            {% endfor %}
+            <span {{ currentPage == pagesCount ? 'class="disabled"' }}>
+                <a href="{{ path('admin_users', {page: currentPage+1 <= pagesCount ? currentPage+1 : currentPage}) }}">»</a>
+            </span>
+        </div>
+    {% endif %}
+{% endblock %}

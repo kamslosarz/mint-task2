@@ -1,0 +1,20 @@
+security:
+  encoders:
+    App\Security\User: bcrypt
+    App\Entity\User: bcrypt
+  providers:
+    app_user_provider:
+      id: App\Security\UserProvider
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+    main:
+      anonymous: true
+      lazy: true
+      provider: app_user_provider
+      guard:
+        authenticators:
+          - App\Security\LoginFormAuthenticator
+      logout:
+        path: app_logout
